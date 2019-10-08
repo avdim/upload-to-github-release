@@ -52,6 +52,8 @@ async function run() {
         // action_github.context.repo.repo = upload-to-github-release-test
         // action_github.context.repo.owner = xresloader
 
+        var tag_name = action_github.context.ref.match(/refs\/tags\/(.*)/);
+        console.log(`tag_name: ${tag_name}`)
         var release_name = "Release-" + action_github.context.sha.substr(0, 8);
         var release_name_bind_to_tag = false;
         if ((with_branches && with_branches.length > 0) || with_tags) {
