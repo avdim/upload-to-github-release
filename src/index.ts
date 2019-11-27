@@ -14,11 +14,11 @@ async function run() {
     try {
         const github_token = (process.env['GITHUB_TOKEN'] || '').trim();
         const preReleasePrefix = (process.env['PRE_RELEASE_PREFIX'] || 'PreRelease-').trim().replace(new RegExp("[ ,:]+", "g"), "-");
-        var releaseNotes:string = "";
-        let base64ReleaseNotes = process.env['RELEASE_NOTES_BASE_64'];
-        if (base64ReleaseNotes != null && base64ReleaseNotes.length > 0) {
-            releaseNotes = base64.decode(process.env['RELEASE_NOTES_BASE_64']);
-        }
+        var releaseNotes:string = "";//todo release notes
+        // let base64ReleaseNotes = process.env['RELEASE_NOTES_BASE_64'];
+        // if (base64ReleaseNotes != null && base64ReleaseNotes.length > 0) {
+        //     releaseNotes = base64().decode(process.env['RELEASE_NOTES_BASE_64']);
+        // }
         const upload_files_pattern = getInputAsArray('file');
         const is_draft = false; //getInputAsBool('draft');
         const is_prerelease = true; //getInputAsBool('prerelease');
