@@ -23,12 +23,8 @@ async function run() {
             return;
         }
 
-        const match_tag = action_github.context.ref.match(/refs\/tags\/(.*)/);
-        if(match_tag == null) {
-            console.error(`unknown tag ${action_github.context.ref}`);
-            return;
-        }
-        const TAG_NAME = match_tag[1];
+        const TAG_NAME = `CustomBuild-action_github.context.ref-${Date()}`;
+
         console.log(`TAG_NAME: ${TAG_NAME}`);
 
         const upload_files = await globby(upload_files_pattern);
