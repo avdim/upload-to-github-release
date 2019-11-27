@@ -8903,7 +8903,7 @@ function run() {
             const upload_files_pattern = getInputAsArray('file');
             const is_overwrite = false; //action_core.getInput('overwrite');
             const is_draft = false; //getInputAsBool('draft');
-            const is_prerelease = false; //getInputAsBool('prerelease');
+            const is_prerelease = true; //getInputAsBool('prerelease');
             getInputAsArray('branches');
             const is_verbose = true; //getInputAsBool('verbose');
             if (!github_token) {
