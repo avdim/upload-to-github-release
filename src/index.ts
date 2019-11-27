@@ -23,7 +23,7 @@ async function run() {
             return;
         }
 
-        let dateStr = new Date().toLocaleString("RU", {timeZone: "Europe/Moscow"}).replace(new RegExp("[ ,:]", "g"), "_");
+        let dateStr = new Date().toLocaleString("RU", {timeZone: "Europe/Moscow"}).replace(new RegExp("[ ,:]+", "g"), "_");
         const TAG_NAME = `CustomBuild-${action_github.context.ref}-sha_${action_github.context.sha.substr(0, 8)}-${dateStr}`;
 
         console.log(`TAG_NAME: ${TAG_NAME}`);
