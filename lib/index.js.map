@@ -8899,6 +8899,8 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const github_token = (process.env['GITHUB_TOKEN'] || '').trim();
+            const preReleasePrefix = (process.env['PRE_RELEASE_PREFIX'] || 'PreRelease-').trim().replace(new RegExp("[ ,:]+", "g"), "-");
+            const releaseNotes = atob(process.env['RELEASE_NOTES_BASE_64'] || '');
             const upload_files_pattern = getInputAsArray('file');
             const is_draft = false; //getInputAsBool('draft');
             const is_prerelease = true; //getInputAsBool('prerelease');
@@ -8908,8 +8910,8 @@ function run() {
                 action_core.setFailed("GITHUB_TOKEN is required to upload files");
                 return;
             }
-            let dateStr = new Date().toLocaleString("RU", { timeZone: "Europe/Moscow" }).replace(new RegExp("[ ,:]+", "g"), "_");
-            const TAG_NAME = `CustomBuild-${action_github.context.ref}-sha_${action_github.context.sha.substr(0, 8)}-${dateStr}`;
+            let dateStr = new Date().toLocaleString("RU", { timeZone: "Europe/Moscow" }).replace(new RegExp("[ ,:]+", "g"), "-");
+            const TAG_NAME = `${preReleasePrefix}-${action_github.context.ref}__sha-${action_github.context.sha.substr(0, 8)}__${dateStr}`;
             console.log(`TAG_NAME: ${TAG_NAME}`);
             const upload_files = yield globby_1.default(upload_files_pattern);
             if (!upload_files || upload_files.length <= 0) {
@@ -8934,7 +8936,8 @@ function run() {
                 name: TAG_NAME,
                 // body: "",
                 draft: is_draft,
-                prerelease: is_prerelease
+                prerelease: is_prerelease,
+                body: releaseNotes
             });
             let upload_url = deploy_release.data.upload_url;
             let release_url = deploy_release.data.url;

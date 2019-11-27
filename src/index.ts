@@ -12,6 +12,8 @@ function getInputAsArray(name: string): string[] {
 async function run() {
     try {
         const github_token = (process.env['GITHUB_TOKEN'] || '').trim();
+        const preReleasePrefix = (process.env['PRE_RELEASE_PREFIX'] || 'PreRelease-').trim().replace(new RegExp("[ ,:]+", "g"), "-");
+        const releaseNotes: string = atob(process.env['RELEASE_NOTES_BASE_64'] || '');
         const upload_files_pattern = getInputAsArray('file');
         const is_draft = false; //getInputAsBool('draft');
         const is_prerelease = true; //getInputAsBool('prerelease');
@@ -23,8 +25,8 @@ async function run() {
             return;
         }
 
-        let dateStr = new Date().toLocaleString("RU", {timeZone: "Europe/Moscow"}).replace(new RegExp("[ ,:]+", "g"), "_");
-        const TAG_NAME = `CustomBuild-${action_github.context.ref}-sha_${action_github.context.sha.substr(0, 8)}-${dateStr}`;
+        let dateStr = new Date().toLocaleString("RU", {timeZone: "Europe/Moscow"}).replace(new RegExp("[ ,:]+", "g"), "-");
+        const TAG_NAME = `${preReleasePrefix}-${action_github.context.ref}__sha-${action_github.context.sha.substr(0, 8)}__${dateStr}`;
 
         console.log(`TAG_NAME: ${TAG_NAME}`);
 
@@ -54,7 +56,8 @@ async function run() {
             name: TAG_NAME,
             // body: "",
             draft: is_draft,
-            prerelease: is_prerelease
+            prerelease: is_prerelease,
+            body: releaseNotes
         });
         let upload_url = deploy_release.data.upload_url;
         let release_url = deploy_release.data.url;
