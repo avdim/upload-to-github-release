@@ -23,7 +23,7 @@ async function run() {
             return;
         }
 
-        const TAG_NAME = `CustomBuild-action_github.context.ref-${Date()}`;
+        const TAG_NAME = `CustomBuild-${action_github.context.ref}-${Date.now()}`;
 
         console.log(`TAG_NAME: ${TAG_NAME}`);
 

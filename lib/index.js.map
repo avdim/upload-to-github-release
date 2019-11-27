@@ -8908,7 +8908,7 @@ function run() {
                 action_core.setFailed("GITHUB_TOKEN is required to upload files");
                 return;
             }
-            const TAG_NAME = `CustomBuild-action_github.context.ref-${Date()}`;
+            const TAG_NAME = `CustomBuild-${action_github.context.ref}-${Date.now()}`;
             console.log(`TAG_NAME: ${TAG_NAME}`);
             const upload_files = yield globby_1.default(upload_files_pattern);
             if (!upload_files || upload_files.length <= 0) {
