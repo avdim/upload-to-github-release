@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import mime from 'mime/lite';
 
-function getInputAsArray(name: string) : string[] {
+function getInputAsArray(name: string): string[] {
     return (action_core.getInput(name) || '').split(";").map(v => v.trim()).filter(v => !!v);
 }
 
@@ -23,7 +23,8 @@ async function run() {
             return;
         }
 
-        const TAG_NAME = `CustomBuild-${action_github.context.ref}-${Date.now()}`;
+        let dateStr = new Date().toLocaleString("ru-RU", {timeZone: "Europe/Moscow"}).replace(new RegExp("[ ,:]*", "g"), "_");
+        const TAG_NAME = `CustomBuild-${action_github.context.ref}-sha_${action_github.context.sha.substr(0, 8)}-${dateStr}`;
 
         console.log(`TAG_NAME: ${TAG_NAME}`);
 
@@ -39,7 +40,7 @@ async function run() {
         // request github release
         const octokit = new action_github.GitHub(github_token);
 
-        const pending_to_upload : string[] = [];
+        const pending_to_upload: string[] = [];
 
         if (is_verbose) {
             console.log("============================= v3 API: createRelease =============================");
