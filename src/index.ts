@@ -4,6 +4,7 @@ import globby from 'globby';
 import * as path from 'path';
 import * as fs from 'fs';
 import mime from 'mime/lite';
+import base64 from 'js-base64';
 
 function getInputAsArray(name: string): string[] {
     return (action_core.getInput(name) || '').split(";").map(v => v.trim()).filter(v => !!v);
@@ -13,7 +14,11 @@ async function run() {
     try {
         const github_token = (process.env['GITHUB_TOKEN'] || '').trim();
         const preReleasePrefix = (process.env['PRE_RELEASE_PREFIX'] || 'PreRelease-').trim().replace(new RegExp("[ ,:]+", "g"), "-");
-        const releaseNotes: string = atob(process.env['RELEASE_NOTES_BASE_64'] || '');
+        var releaseNotes:string = "";
+        let base64ReleaseNotes = process.env['RELEASE_NOTES_BASE_64'];
+        if (base64ReleaseNotes != null && base64ReleaseNotes.length > 0) {
+            releaseNotes = base64.decode(process.env['RELEASE_NOTES_BASE_64']);
+        }
         const upload_files_pattern = getInputAsArray('file');
         const is_draft = false; //getInputAsBool('draft');
         const is_prerelease = true; //getInputAsBool('prerelease');
